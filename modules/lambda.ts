@@ -2,7 +2,7 @@ import AWS from 'aws-sdk';
 // import proxy from 'proxy-agent';
 const util = require('util');
 
-import { getSubnetIdByName } from './subnet';
+import { getSubnetIdByName } from './ec2';
 
 // init AWS
 AWS.config.update({ region: process.env.AWS_REGION });
