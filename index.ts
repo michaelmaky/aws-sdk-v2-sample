@@ -23,16 +23,17 @@ console.log('value:', value);
 // base on cmd and value to determine the procedure need to run
 (async () => {
   try {
+    if (!process.env.VPC_ID_ELB) return;
     if (!process.env.VPC_ID_LAMBDA) return;
 
     if (cmd === 'remove') {
-      detachElbToSubnet(process.env.VPC_ID_LAMBDA, value);
+      detachElbToSubnet(process.env.VPC_ID_ELB, value);
       removeLambdaToSubnet(process.env.VPC_ID_LAMBDA, value);
       console.log('run remove command successfully.');
     }
 
     if (cmd === 'resume') {
-      attachElbToSubnet(process.env.VPC_ID_LAMBDA, value);
+      attachElbToSubnet(process.env.VPC_ID_ELB, value);
       addLambdaToSubnet(process.env.VPC_ID_LAMBDA, value);
       console.log('run resume command successfully.');
     }
