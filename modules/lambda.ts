@@ -7,6 +7,16 @@ import { getSubnetIdByName } from './ec2';
 // init AWS
 AWS.config.update({ region: process.env.AWS_REGION });
 
+export const getFunctions = async () => {
+  const lambda = new AWS.Lambda({ apiVersion: '2015-03-31' });
+
+  const params = {};
+
+  const lambdas = await lambda.listFunctions(params).promise();
+  console.info('lambdas', lambdas);
+  return lambdas;
+};
+
 export const addLambdaToSubnet = async (vpcId: string, subnetName: string) => {
   await updateLambdaSubnet('add', vpcId, subnetName);
 };
