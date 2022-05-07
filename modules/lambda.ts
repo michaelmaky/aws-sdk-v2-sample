@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+import * as fs from 'fs';
 // import proxy from 'proxy-agent';
 const util = require('util');
 
@@ -15,6 +16,22 @@ export const getFunctions = async () => {
   const lambdas = await lambda.listFunctions(params).promise();
   console.info('lambdas', lambdas);
   return lambdas;
+};
+
+export const exportFunctionsToJSON = async () => {
+  const lambdas = await getFunctions();
+
+  let output: {
+    data: Array<any>;
+  } = { data: [] };
+
+  lambdas?.Functions?.forEach(async (obj) => {
+    const subset = (({ FunctionName, Environment }) => ({ FunctionName, Environment }))(obj);
+    console.log(subset);
+    output.data.push(subset);
+  });
+  // export to json file
+  fs.writeFileSync('lambda-' + new Date().toISOString() + '.json', JSON.stringify(output, null, 4), 'utf8');
 };
 
 export const addLambdaToSubnet = async (vpcId: string, subnetName: string) => {

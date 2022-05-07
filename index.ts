@@ -1,9 +1,9 @@
 require('dotenv').config();
 const util = require('util');
 
-import { getFunctions } from './modules/lambda';
+import { getFunctions, exportFunctionsToJSON } from './modules/lambda';
 import { removeResourcesFromSubnet, resumeResourcesInSubnet } from './modules/subnet';
-import { getParametersByPath } from './modules/ssm';
+import { getParametersByPath, exportParametersToJSON } from './modules/ssm';
 
 // console.log(AWS.config);
 // console.log(process.env.NODE_ENV);
@@ -29,16 +29,25 @@ console.log('value:', value);
         if (cmd === 'removeResourcesFromSubnet') {
           removeResourcesFromSubnet(value);
         }
-
         if (cmd === 'removeResourcesFromSubnet') {
           resumeResourcesInSubnet(value);
         }
         break;
       case 'ssm':
-        getParametersByPath();
+        if (cmd === 'getParametersByPath') {
+          getParametersByPath();
+        }
+        if (cmd === 'exportParametersToJSON') {
+          exportParametersToJSON();
+        }
         break;
       case 'lambda':
-        getFunctions();
+        if (cmd === 'getFunctions') {
+          getFunctions();
+        }
+        if (cmd === 'exportFunctionsToJSON') {
+          exportFunctionsToJSON();
+        }
         break;
       default:
       // code block
